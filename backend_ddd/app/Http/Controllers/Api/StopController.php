@@ -15,9 +15,15 @@ class StopController extends Controller
         return StopResource::collection($stops);
     }
 
-    public function buses(Stop $stop)
+    public function show($id)
     {
-        $stop->load('buses.currentLocation');
+        $stop = Stop::findOrFail($id);
+        return new StopResource($stop);
+    }
+
+    public function getBuses($id)
+    {
+        $stop = Stop::with('buses.currentLocation')->findOrFail($id);
         return BusResource::collection($stop->buses);
     }
 }
